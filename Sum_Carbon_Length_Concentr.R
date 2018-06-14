@@ -1,8 +1,10 @@
 #!/usr/bin/R
+
 ## Author : Maria Kondili
 
-##>Subject : Design in lines the progression of Carbon-lengths for lipids with 32-42 C in order to show Elongation 
-## elongation_plot.R
+## Subject : Design in lines the progression of Carbon-lengths for lipids with 32-42 C in order to show Elongation 
+
+
 workdir<- "/media/kondmar/PROJECTS/Lipidomics/SUM_per_CarbonLength/"
 
 ccl4_dir <- paste0(workdir,"CCl4/input_tabs/")
