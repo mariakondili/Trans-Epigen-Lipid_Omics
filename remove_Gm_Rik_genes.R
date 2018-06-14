@@ -16,17 +16,19 @@ remove_pred_genes <- function(GeneNames_List, outdir, outfile_name){
 
 	write.table(GeneList_noRik_noGm, paste0(outdir,outfile_name,".txt"), 
             	    sep="\t", col.names = FALSE, row.names = FALSE, quote=FALSE)
+
+	return(GeneList_noRik_noGm)
 }
 
 
 #### Do the filtering for a list of DE GeneNames coming from RNA-seq
-rnaseqdir <- "media/kondmar/RNAseq/diffana/Genes_log2FC_1.5/"
+rnaseqdir <- "/home/kondmar/RNAseq/diffana/Genes_log2FC_1.5/"
+
 genes_outdir <- paste0(rnaseqdir, 'Filtered_Gm+Rik_genes/')
 
 #Create the R-array object of the one column-GenesList
-Upregul_GenesList <- read.table(paste0(rnaseqdir,"Upregulated_Genes_log2fc_1.5.txt"), 
-			 	sep="\t", header=FALSE, as.is=TRUE)[,1]
+Upregul_GenesList <- read.table(paste0(rnaseqdir,"Upregulated_Genes.txt"), sep="\t", header=FALSE, as.is=TRUE)[,1]
 
-remove_pred_genes(Upregul_GenesList, genes_outdir, "UpregGenes_NoGmRik")
+upregGen_noGmRik <-remove_pred_genes(Upregul_GenesList, genes_outdir, "UpregGenes_NoGmRik")
 
 ##> Output: New GenesList will be written in genes_outdir.
