@@ -40,7 +40,17 @@ rbind_tab <- function(fun2bind=colMeans, tab, lipids_list) {
 
 
 ###### Calculate Mean +Sem for each Lipid table per Carbon Length  ######
-source(paste0(homedir,"R_functions/calc_sem.R"))
+
+calc_sem_1tab <- function(mytab) {
+  ## input :2-D TABLES from lipids with Rows=samples, Columns =C-lengths
+  ## Calculates Std Error of Means for a Lipid on each C-length and for each condition:WT,KO
+  sem_tab <- sapply(mytab, sd, 2)/sqrt(nrow(mytab))
+                    
+  #colnames(sem_tab) <- colnames(mytab)
+  ## Returns SEM for each C-length (Lines) on WT,KO =columns
+  return(sem_tab)
+}
+
 
 mean_perClen_WT <- rbind_tab (colMeans, WT_tabs,long_lipids )
 sem_perClen_WT <- rbind_tab(fun2bind = calc_sem_1tab, WT_tabs, long_lipids  )
@@ -51,7 +61,7 @@ sem_perClen_KO <- rbind_tab(fun2bind = calc_sem_1tab, KO_tabs, long_lipids  )
 
 
 library(reshape2)
-## Create Reformatted Matrices for 
+## Create Reformatted Matrices for plot
 mt_Mean_Clen_WT <- melt(as.matrix(mean_perClen_WT))
 mt_sem_Clen_WT <- melt(as.matrix(sem_perClen_WT))
 
