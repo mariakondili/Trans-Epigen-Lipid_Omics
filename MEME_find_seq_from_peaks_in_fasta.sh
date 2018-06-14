@@ -13,9 +13,9 @@ samtools faidx $ref_genome  ## Creates Output .fa.fai in same Directoyry as Inpu
 
 ##> Bed files to be used : 
 bed_dir='/home/kondmar/ChIPseq/MACS2_PeakCalling/Broad/'
-bed_0m=$bed_dir'onMergedBAMs/WT_000m_mrg/WT_000m_mrg_broadPeaks.bed'
-bed_120m=$bed_dir'onMergedBAMs/WT_120m_mrg/WT_120m_mrg_broadPeaks.bed'
-bed_30m=$bed_dir'WT_030m_R1_SE/WT_030m_broadPeaks.bed'
+bed_0m=$bed_dir'MergedBAMs/WT0m_mrg_broadPeaks.bed'
+bed_120m=$bed_dir'MergedBAMs/WT120m_mrg_broadPeaks.bed'
+bed_30m=$bed_dir'WT30m/WT30m_broadPeaks.bed'
 
 out_dir=$bed_dir'MEME_MOTIFS/'
 
