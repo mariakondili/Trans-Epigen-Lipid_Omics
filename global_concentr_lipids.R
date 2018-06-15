@@ -20,8 +20,7 @@
 #X24_1   1.4816 2.6150
 #Total   5.7900 8.7100
 
-
-source("calc_average_per_lipid.R")
+homedir<- "/home/kondmar/PROJECTS/Lipidomics/"
 
 avg_dir <- paste0(homedir, "CCL4_AverageConcentration/Average_Tables")
 avg_ccl4_tabs <- list.files(path=avg_dir,pattern="*.txt", full.names=TRUE)
@@ -39,12 +38,9 @@ totals_ccl4 <- t(sapply(lipid_names, function(L){ cbind(avgs_ccl4[[L]]["Total","
 colnames(totals_ccl4) <- c("WT","KO" )
 
 
-write.table(totals_ccl4, file="CCL4_AverageConcentration/All_Lipids_TotalConcentr_CCl4.txt", 
+write.table(totals_ccl4, file="CCL4_AverageConcentration/All_Lipids_TotalConcentr.txt", 
             col.names = TRUE, row.names = TRUE,sep="\t", quote=FALSE)
 
-
-##Do the melt in the plot.function 
-#   melt_avgs_ccl4  <- melt(all_avgs_ccl4); colnames(melt_avgs_ccl4) <- c("Lipid", "Condition", "Concentration")
 
 sem_array<-function(v) {
   sem <-sd(v)/sqrt(length(v))
@@ -76,6 +72,7 @@ write.table(sem_totals_ccl4, file="CCL4_AverageConcentration/SEM_AllLipids_Total
             col.names = TRUE, row.names = TRUE,sep="\t", quote=FALSE)
 
 
+###> Create function for the plot to be applied globally.
 plot.concentr.sem <- function( av_tab, sem_tab, lipid_name,treatment) { ## std_tab can be used inst.of sem_tab
   require(reshape2)            
   library(ggplot2)
