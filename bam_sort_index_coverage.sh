@@ -1,50 +1,35 @@
 #!/bin/bash
-mkdir /media/kondmar/my2TB/PROJECTS/NV/IRF5_ChIPseq/Bigwigs/
-cd /media/kondmar/my2TB/PROJECTS/NV/IRF5_ChIPseq/bam/Bowtie2_Trimmed/WT/
 
-#for f in $(ls chip/*.bam); do
+## Author : Maria Kondili 
 
-#	echo $f
-#	basenm=$(echo ${f} | sed 's/.bam//')
-	# Sort BAM file
-#	samtools sort -O BAM $f -o "Sorted_bam/"${basenm}"_sorted.bam"
-	# index the bam file
-#	samtools index ${basenm}_sorted.bam
-#done
+## Subject :  First basic steps to do on bam files of ChIPseq experiment ,to facilitate Downstream Analysis
+##            Sort and index a bam file is necessary for all NGS data after alignment. 
+##            bamCoverage is done for obtaining visualisable files from which we can verify the aligment signal and observe the peaks/enriched regions of chromatin state.
 
 
-for sf in $(ls *_sorted.bam); do
-	bw_nam=$(echo ${sf} | sed 's/\_sorted.bam//')
-	echo "Coverage for " $bw_nam " will be calculated now.."
-	bamCoverage -b $sf -o ../../../Bigwigs/${bw_nam}.bw -of "bigwig" -p 5  --ignoreForNormalization chrX chrM -bs 20 --smoothLength 60  --normalizeUsingRPKM
+inputdir='/home/kondmar/PROJECTS/ChIPseq/bam/'
+sorted_dir=$inputdir'sorted/'
+mkdir $sorted_dir
+outdir='/home/kondmar/PROJECTS/ChIPseq/Bigwigs/'
+
+
+
+for f in $(ls $inputdir/*.bam); do
 	
-done
-
-
-##### In EMTAB-2661 
-##> Use the bam files from IRF5_ChIPseq of Mano's directory
-
-source_dir='/media/Timecapsule/Presentations/Mano/IRF5/IRF5ChIP-Seq/IRF5_ChIP_BMDM/BAM'
-mkdir Sorted_bam/
-for f in $(ls $source_dir/*.bam); do
+	basenm=`echo $f | rev | cut -d"/" -f 1 |rev | sed 's/.bam//'`  ## rev = reads backwards, from end to beginning, so 1st field is the file.bam
 	
-	basenm=`echo $f |rev | cut -d"/" -f 1 |rev | sed 's/.bam//'`  ## rev = reads backwards, from end to beginning, so 1st field is the file.bam
 	# Sort BAM file
 	echo $basenm
-	#samtools sort -O BAM $f -o "Sorted_bam/"${basenm}"_sorted.bam"
+	samtools sort -O BAM $f -o $inputdir"Sorted_bam/"${basenm}"_sorted.bam"
+	
 	# index the bam file
-	samtools index "Sorted_bam/"${basenm}"_sorted.bam"
+	samtools index $inputdir"Sorted_bam/"${basenm}"_sorted.bam"
 done
 
 
-for sf in $(ls Sorted_bam/*_sorted.bam); do
+for sf in $(ls $sorted_dir/*_sorted.bam); do
 	bw_nam=$(echo ${sf} | sed 's/\_sorted.bam//' |cut -d "/" -f 2)
-	echo "Coverage for " $bw_nam " will be calculated now.."
-	bamCoverage -b $sf -o Bigwigs/${bw_nam}.bw -of "bigwig" -p 5  --ignoreForNormalization chrX chrM -bs 20 --smoothLength 60  --normalizeUsingRPKM
+	echo "Coverage for " $bw_nam " in progress ..."
+	bamCoverage -b $sf -o $outdir${bw_nam}.bw -of "bigwig" -p 5  --ignoreForNormalization chrX chrM -bs 20 --smoothLength 60  --normalizeUsingRPKM
 done
-
-
-cd /media/kondmar/my2TB/PROJECTS/NV/IRF5_ChIPseq/bam/BAM_Trim_q10_RmDup/KO/ 
-bamCoverage -b KO_000m_R1_q10_rmDup.bam -o ../../../Bigwigs/KO_000m_R1.bw -of "bigwig" -p 5  --ignoreForNormalization chrX chrM -bs 20 --smoothLength 60  --normalizeUsingRPKM
-
 
