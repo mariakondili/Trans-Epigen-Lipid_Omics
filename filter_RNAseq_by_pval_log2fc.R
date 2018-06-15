@@ -1,7 +1,11 @@
+#!/usr/bin/R 
+
+## Author : Maria Kondili
+
 
 filter_by_pval_log2fc <- function(diffana_tab, outdir, elem="transcript", pval_co, log2fc_co) { 
   
-  ## Accept a matrix of diff.expr normalized counts with log2FC_KO.WT column calculated for each transcript/gene, by a DE-algorithm
+  ## Accept a matrix of diff.expr normalized counts with log2FC_KO.WT column calculated for each transcript/gene, by a DE-algorithm( e.g DESEQ2, edgeR)
 
   # Filter by pval
   pval_idx <- which(diffana_tab$pval <= pval_co)
@@ -25,8 +29,8 @@ filter_by_pval_log2fc <- function(diffana_tab, outdir, elem="transcript", pval_c
 
 transcr_names_filt <- filter_by_pval_log2fc(transcr_diffana, outdir, pval_co=0.05, log2fc_co=1.5)
 
-cat("\nUpregulated transcripts significantly differentiated: ", length(transcr_names_filt$up))     #753
+cat("\nUpregulated transcripts significantly differentiated: ", length(transcr_names_filt$up))   
 
-cat("\nDownregulated transcripts significantly differentiated: ", length(transcr_names_filt$down)) #207
+cat("\nDownregulated transcripts significantly differentiated: ", length(transcr_names_filt$down))
 
 
